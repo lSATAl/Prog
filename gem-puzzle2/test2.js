@@ -4,6 +4,8 @@ const otkat = document.querySelector('.pobeda')
 const Memor = document.querySelector('.mem')
 const selection = document.querySelector('.select')
 const Start = document.querySelector('.start')
+const Clear = document.querySelector('.clear')
+
 
 let selectChoice = selection.value.slice(-1);
 var Mamory = [];
@@ -76,6 +78,7 @@ function move (nomer) {
     kletka.element.style.left = `${okno.left * razmerKletki}px`;
     kletka.element.style.top = `${okno.top * razmerKletki}px`;
 
+
     let oknoLeft = okno.left;
     let oknoTop = okno.top;
     okno.left = kletka.left;
@@ -94,52 +97,65 @@ function move (nomer) {
 
 }
 function start () {
-    selectChoice = selection.value.slice(-1);
-    razmerKletki = 320 / selectChoice;
-    countKletok = selectChoice * selectChoice;
+    if(pole.firstChild) {
+        return
+    } else {
+        selectChoice = selection.value.slice(-1);
+        razmerKletki = 320 / selectChoice;
+        countKletok = selectChoice * selectChoice;
+        nomera =[...Array(countKletok-1).keys()];
+        okno.value = 0;
+        okno.top = 0;
+        okno.left = 0;
 
-    nomera =[...Array(countKletok-1).keys()];
-    okno.value = 0;
-    okno.top = 0;
-    okno.left = 0;
+        console.log(okno)
+        
 
-    console.log(okno)
-    while (pole.firstChild) {
-        pole.firstChild.remove();
+        for (let i = 1; i <= (countKletok - 1); i++) {
+            let kletka = document.createElement('div')
+            let value = nomera[i - 1] +  1;
+            kletka.className = 'kletka'; 
+            kletka.innerHTML = value;
+        
+            let left = i % selectChoice;
+            let top = (i - left) / selectChoice;
+        
+            kletki.push({
+                value: value,
+                left: left,
+                top: top,
+                element: kletka
+            });
+            kletka.style.width = `${320 / selectChoice}px`
+            kletka.style.height = `${320 / selectChoice}px`
+            kletka.style.left = `${left * razmerKletki}px`;
+            kletka.style.top = `${top * razmerKletki}px`;
+        
+            
+        
+            kletka.addEventListener('click', () => {
+                move(i);
+                console.log(i)
+            })
+            pole.append(kletka);
     }
 
-    for (let i = 1; i <= (countKletok - 1); i++) {
-        let kletka = document.createElement('div')
-        let value = nomera[i - 1] +  1;
-        kletka.className = 'kletka'; 
-        kletka.innerHTML = value;
     
-        let left = i % selectChoice;
-        let top = (i - left) / selectChoice;
-    
-        kletki.push({
-            value: value,
-            left: left,
-            top: top,
-            element: kletka
-        });
-        kletka.style.width = `${320 / selectChoice}px`
-        kletka.style.height = `${320 / selectChoice}px`
-        kletka.style.left = `${left * razmerKletki}px`;
-        kletka.style.top = `${top * razmerKletki}px`;
-    
-        
-    
-        kletka.addEventListener('click', () => {
-            move(i);
-            console.log(i)
-        })
-        pole.append(kletka);
     }
     random()
     console.log(Mamory)
     console.log(okno)
 
+    
+}
+
+function clear () {
+    while (pole.firstChild) {
+        pole.firstChild.remove();
+    }
+    kletki = [];
+    nomera = [];
+    kletki.push(okno);
     
 }
 //Функции-------------------------------------------------------------------------------
@@ -167,3 +183,7 @@ Memor.addEventListener('click', () => {
 Start.addEventListener('click', () => {
         start();
         });
+
+Clear.addEventListener('click', () => {
+    clear();
+    });

@@ -17,6 +17,11 @@ body {
     position: relative;
    background: rgb(129, 201, 129);
 }
+.menu {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
 /*
 @media (max-width: 400px) {
     .pole {
@@ -79,6 +84,7 @@ button:hover {
     cursor: pointer;
 }
 .select {
+    height: 23px;
     display: flex;
     justify-content: center;
     background-color: #20252a;
