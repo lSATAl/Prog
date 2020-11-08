@@ -2,18 +2,23 @@ const pole = document.querySelector('.pole');
 const randome = document.querySelector('.random')
 const otkat = document.querySelector('.pobeda')
 const Memor = document.querySelector('.mem')
+const selection = document.querySelector('.select')
+const Start = document.querySelector('.start')
 
-const razmerKletki = 100;
+let selectChoice = selection.value.slice(-1);
 var Mamory = [];
+let countKletok = selectChoice * selectChoice;
+let razmerKletki = 320 / selectChoice;
+let nomera =[...Array(countKletok-1).keys()];
 let okno = { // позиция пустого окна
     value: 0,
     top: 0,
     left: 0,
 }
-
 let kletki = [];
 kletki.push(okno);
 //Функции-------------------------------------------------------------------------------
+//Реверс. Отматывает все ходы назад. 
 function bgg () {
     let reversMemory = Mamory.reverse()
     for(let b = 0; b < reversMemory.length; b++) {
@@ -22,13 +27,16 @@ function bgg () {
     }
     console.log(reversMemory)
 }
+
+//Перемешивание
 function random() {    
     for (let z = 1; z <= 3000; z++) {
         let a = nomera[Math.floor(Math.random() * nomera.length)];
-       if (a === 0) a = 12
+       if (a === 0) a = 2
         move(a)
     }
 }
+// Функция для реверсивного движения
 function move2 (nomer) {
     let kletka = kletki[nomer];
 
@@ -53,6 +61,7 @@ function move2 (nomer) {
         return kletka.value === kletka.top * 4 + kletka.left;
     })
 }
+//Функция передвижения леток по полю
 function move (nomer) {
     let kletka = kletki[nomer];
 
@@ -81,43 +90,66 @@ function move (nomer) {
     if(finish) {
         
     }
+
+
+}
+function start () {
+    selectChoice = selection.value.slice(-1);
+    razmerKletki = 320 / selectChoice;
+    countKletok = selectChoice * selectChoice;
+
+    nomera =[...Array(countKletok-1).keys()];
+    okno.value = 0;
+    okno.top = 0;
+    okno.left = 0;
+
+    console.log(okno)
+    while (pole.firstChild) {
+        pole.firstChild.remove();
+    }
+
+    for (let i = 1; i <= (countKletok - 1); i++) {
+        let kletka = document.createElement('div')
+        let value = nomera[i - 1] +  1;
+        kletka.className = 'kletka'; 
+        kletka.innerHTML = value;
+    
+        let left = i % selectChoice;
+        let top = (i - left) / selectChoice;
+    
+        kletki.push({
+            value: value,
+            left: left,
+            top: top,
+            element: kletka
+        });
+        kletka.style.width = `${320 / selectChoice}px`
+        kletka.style.height = `${320 / selectChoice}px`
+        kletka.style.left = `${left * razmerKletki}px`;
+        kletka.style.top = `${top * razmerKletki}px`;
+    
+        
+    
+        kletka.addEventListener('click', () => {
+            move(i);
+            console.log(i)
+        })
+        pole.append(kletka);
+    }
+    random()
+    console.log(Mamory)
+    console.log(okno)
+
+    
 }
 //Функции-------------------------------------------------------------------------------
 //Генерация поля -----------------------------------------------------------------------
-let nomera =[...Array(15).keys()];
 
-for (let i = 1; i <= 15; i++) {
-    let kletka = document.createElement('div')
-    let value = nomera[i - 1] +  1;
-    kletka.className = 'kletka'; 
-    kletka.innerHTML = value;
 
-    let left = i % 4;
-    let top = (i - left) / 4
-
-    kletki.push({
-        value: value,
-        left: left,
-        top: top,
-        element: kletka
-    });
-
-    kletka.style.left = `${left * razmerKletki}px`;
-    kletka.style.top = `${top * razmerKletki}px`;
-
-    pole.append(kletka);
-
-    kletka.addEventListener('click', () => {
-        move(i);
-        console.log(i)
-    })
-    
-}
 //Генерация поля -----------------------------------------------------------------------
 
 //запускаем рандомайзер, сохраняем его шаги в память mamory
-random()
-console.log(Mamory)
+
 
 //кнопочки
 randome.addEventListener('click', () => {
@@ -131,3 +163,7 @@ otkat.addEventListener('click', () => {
 Memor.addEventListener('click', () => {
     console.log(Mamory)
     });
+
+Start.addEventListener('click', () => {
+        start();
+        });
