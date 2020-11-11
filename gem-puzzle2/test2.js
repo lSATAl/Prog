@@ -19,13 +19,25 @@ let okno = { // позиция пустого окна
 }
 let kletki = [];
 kletki.push(okno);
+
+
+
+//let b = 0;
+//let reversMemory = Mamory.reverse()
+//let slow =  setTimeout(move2, 30 * (b + 1), reversMemory[b])  
+
 //Функции-------------------------------------------------------------------------------
 //Реверс. Отматывает все ходы назад. 
 function bgg () {
+    if (!cancelled) {
+        console.log('GG!')
+        return false;
+      }
     MamoryCleaner(Mamory)
     let reversMemory = Mamory.reverse()
-    for(let b = 0; b < reversMemory.length; b++) {
-        setTimeout(move2, 50 * (b + 1), reversMemory[b])            
+    for(b = 0; b < reversMemory.length; b++) {
+       let slow =  setTimeout(move2, 30 * (b + 1), reversMemory[b])  
+       slow;          
     }
     Mamory = [];
     console.log(reversMemory)
@@ -45,8 +57,6 @@ function random() {
 }
 // Функция для реверсивного движения
 function move2 (nomer) {
-
-    
         let kletka = kletki[nomer];
 
         let leftBord = Math.abs(okno.left - kletka.left);
@@ -67,8 +77,12 @@ function move2 (nomer) {
         kletka.top = oknoTop;
     
     
-    
 }
+
+function CTOP() {
+    cancelled = true;
+    //cancelled = false;
+    }
 //Функция передвижения клеток по полю
 function move (nomer) {
     let kletka = kletki[nomer];
@@ -116,7 +130,7 @@ function start () {
 
         console.log(okno)
         
-
+        //Генерация поля
         for (let i = 1; i <= (countKletok - 1); i++) {
             let kletka = document.createElement('div')
             let value = nomera[i - 1] +  1;
@@ -179,18 +193,22 @@ function MamoryCleaner(a) {
     
     Mamory = a;
   }
+
+//Таймер 
+
+
+
 //Функции-------------------------------------------------------------------------------
-//Генерация поля -----------------------------------------------------------------------
 
-
-//Генерация поля -----------------------------------------------------------------------
 
 //запускаем рандомайзер, сохраняем его шаги в память mamory
 
 
 //кнопочки
 randome.addEventListener('click', () => {
-    random();
+    CTOP();
+    clear();
+    start();
 });
 
 otkat.addEventListener('click', () => {
@@ -201,10 +219,10 @@ Memor.addEventListener('click', () => {
     console.log(Mamory)
     });
 
-Start.addEventListener('click', () => {
-        start();
-        });
+//Start.addEventListener('click', () => {
+ //       start();
+ //       });
 
-Clear.addEventListener('click', () => {
-    clear();
-    });
+//Clear.addEventListener('click', () => {
+  //  clear();
+   // });
