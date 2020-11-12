@@ -99,3 +99,15 @@ button:hover {
 .menub {
     width: 100%;
 }
+.hide {
+    display: none;
+}
+
+
+  .dropzona {
+    border-radius: 10px;
+    position: absolute;
+    box-sizing: border-box;
+    font-size: 0px;
+}
+#hour,#mins,#secs {display: inline-block; border-left: 1px solid #123; padding: 1px 5px;}

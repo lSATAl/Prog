@@ -7,18 +7,23 @@ const Start = document.querySelector('.start')
 const Clear = document.querySelector('.clear')
 
 
+
 let selectChoice = selection.value.slice(-1);
 var Mamory = [];
 let countKletok = selectChoice * selectChoice;
 let razmerKletki = 320 / selectChoice;
 let nomera =[...Array(countKletok-1).keys()];
-let okno = { // позиция пустого окна
+    
+    let okno =  { // позиция пустого окна
     value: 0,
     top: 0,
     left: 0,
 }
+
 let kletki = [];
+let dropZoni = [];
 kletki.push(okno);
+dropZoni.push(okno);
 
 
 
@@ -29,15 +34,21 @@ kletki.push(okno);
 //Функции-------------------------------------------------------------------------------
 //Реверс. Отматывает все ходы назад. 
 function bgg () {
-    if (!cancelled) {
-        console.log('GG!')
-        return false;
-      }
+    //if (!cancelled) {
+     //   console.log('GG!')
+     //   return false;
+     // }
     MamoryCleaner(Mamory)
     let reversMemory = Mamory.reverse()
     for(b = 0; b < reversMemory.length; b++) {
-       let slow =  setTimeout(move2, 30 * (b + 1), reversMemory[b])  
-       slow;          
+      let slow =  setTimeout(move2, 30 * (b + 1), reversMemory[b])  
+       console.log(reversMemory[b])
+       //let slow =  setInterval(() => {
+        //const a = reversMemory.pop();
+        //move2(a);
+       //},30)
+      // setTimeout(() => { clearInterval(slow);}, 5000);
+                 
     }
     Mamory = [];
     console.log(reversMemory)
@@ -78,11 +89,11 @@ function move2 (nomer) {
     
     
 }
-
-function CTOP() {
-    cancelled = true;
+// В теории должна останавливать процесс решения
+//function CTOP() {
+   // cancelled = true;
     //cancelled = false;
-    }
+    //}
 //Функция передвижения клеток по полю
 function move (nomer) {
     let kletka = kletki[nomer];
@@ -97,7 +108,7 @@ function move (nomer) {
 
     kletka.element.style.left = `${okno.left * razmerKletki}px`;
     kletka.element.style.top = `${okno.top * razmerKletki}px`;
-
+    //dragAndDrop()
 
     let oknoLeft = okno.left;
     let oknoTop = okno.top;
@@ -105,6 +116,8 @@ function move (nomer) {
     okno.top = kletka.top;
     kletka.left = oknoLeft;
     kletka.top = oknoTop;
+
+    
 
     let finish = kletki.every(kletka => {
         return kletka.value === kletka.top * 4 + kletka.left;
@@ -117,42 +130,66 @@ function move (nomer) {
 
 }
 function start () {
-    if(pole.firstChild) {
+    if(pole.firstChild) { //не даст заполнить поле, еслитам что то есть.
         return
     } else {
         selectChoice = selection.value.slice(-1);
         razmerKletki = 320 / selectChoice;
+        razmerdropZoni = 320 / selectChoice;
         countKletok = selectChoice * selectChoice;
         nomera =[...Array(countKletok-1).keys()];
+        nomera2 =[...Array(countKletok).keys()];
+
         okno.value = 0;
         okno.top = 0;
         okno.left = 0;
-
+        
         console.log(okno)
         
         //Генерация поля
+        for (let i = 0; i <= (countKletok - 1); i++) {
+            let dropZona = document.createElement('div')
+
+            dropZona.className = 'dropzona'
+        
+            let leftm = i % selectChoice;
+            let topm = (i - leftm) / selectChoice;
+        
+            dropZoni.push({
+                left: leftm,
+                top: topm,
+                element: dropZona
+            });
+            dropZona.style.width = `${320 / selectChoice}px`
+            dropZona.style.height = `${320 / selectChoice}px`
+            dropZona.style.left = `${leftm * razmerdropZoni}px`;
+            dropZona.style.top = `${topm * razmerdropZoni}px`;
+        
+            pole.append(dropZona);
+    }
         for (let i = 1; i <= (countKletok - 1); i++) {
             let kletka = document.createElement('div')
             let value = nomera[i - 1] +  1;
+
             kletka.className = 'kletka'; 
             kletka.innerHTML = value;
+            kletka.setAttribute('draggable', true); //включет возможность drag and drop
         
             let left = i % selectChoice;
             let top = (i - left) / selectChoice;
-        
+
             kletki.push({
                 value: value,
                 left: left,
                 top: top,
                 element: kletka
             });
+
             kletka.style.width = `${320 / selectChoice}px`
             kletka.style.height = `${320 / selectChoice}px`
             kletka.style.left = `${left * razmerKletki}px`;
             kletka.style.top = `${top * razmerKletki}px`;
-        
             
-        
             kletka.addEventListener('click', () => {
                 move(i);
                 console.log(i)
@@ -194,21 +231,119 @@ function MamoryCleaner(a) {
     Mamory = a;
   }
 
-//Таймер 
+//Секундомер
+function timer(){
+
+    const hour = document.getElementById('hour');
+    const mins = document.getElementById('mins');
+    const secs = document.getElementById('secs');
+    let S = '00', M = '00', H = '00';
+    
+    setInterval(function(){
+      //Плюсик перед строкой преобразует его в число
+      S = +S +1;
+      //Если результат меньше 10, прибавляем впереди строку '0'
+      if( S < 10 ) { S = '0' + S; }
+      if( S == 60 ) {
+        S = '00';
+        //Как только секунд стало 60, добавляем +1 к минутам
+        M = +M + 1;
+        //Дальше то же самое, что и для секунд
+        if( M < 10 ) { M = '0' + M; }
+        if( M == 60 ) {
+          //Как только минут стало 60, добавляем +1 к часам.
+          M = '00';
+          H = +H + 1;
+          if( H < 10 ) { H = '0' + H; }
+        }
+      }
+      secs.innerText = S;
+      mins.innerText = M;
+      hour.innerText = H;
+      //Тикает всё через одну функцию, раз в секунду.
+    },1000);
+    
+    };
 
 
+//drag drop
 
+//const dragAndDrop = () => {
+//    const dragDropKletka = document.querySelector('.kletka')
+
+//    const dragStart = function() {
+//        console.log('dragStart')
+//    };
+ //   dragDropKletka.addEventListener('dragstart', dragStart);
+
+
+//}
+
+var dragged;
+
+  /* events fired on the draggable target */
+  document.addEventListener("drag", function( event ) {
+
+  }, false);
+
+  document.addEventListener("dragstart", function( event ) {
+      // store a ref. on the dragged elem
+      dragged = event.target;
+      // make it half transparent
+      event.target.style.opacity = .5;
+  }, false);
+
+  document.addEventListener("dragend", function( event ) {
+      // reset the transparency
+      event.target.style.opacity = "";
+  }, false);
+
+  /* events fired on the drop targets */
+  document.addEventListener("dragover", function( event ) {
+      // prevent default to allow drop
+      event.preventDefault();
+  }, false);
+
+  document.addEventListener("dragenter", function( event ) {
+      // highlight potential drop target when the draggable element enters it
+      if ( event.target.className == "dropzona" ) {
+          event.target.style.background = "purple";
+      }
+
+  }, false);
+
+  document.addEventListener("dragleave", function( event ) {
+      // reset background of potential drop target when the draggable element leaves it
+      if ( event.target.className == "dropzona" ) {
+          event.target.style.background = "";
+      }
+
+  }, false);
+
+  document.addEventListener("drop", function( event ) {
+      // prevent default action (open as link for some elements)
+      event.preventDefault();
+      // move dragged elem to the selected drop target
+      if ( event.target.className == "dropzona" ) {
+          event.target.style.background = "";
+          dragged.parentNode.removeChild( dragged );
+          event.target.appendChild( dragged );
+      }
+    
+  }, false);
 //Функции-------------------------------------------------------------------------------
 
 
+
+
+//кнопочки--------------------------------------------------------------------------------
+
 //запускаем рандомайзер, сохраняем его шаги в память mamory
-
-
-//кнопочки
 randome.addEventListener('click', () => {
-    CTOP();
+    //CTOP();
     clear();
     start();
+    timer()
 });
 
 otkat.addEventListener('click', () => {
