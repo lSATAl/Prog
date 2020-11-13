@@ -122,13 +122,13 @@ button:hover {
     height: 15px;
     display: flex;
     justify-content: center;
-        border: 3px solid rgb(80, 184, 39);
-        border-radius: 10px;
-        padding-left: 50px;
-        background-color: #20252a;
-        color:  rgb(129, 201, 129);
-        font-size: 12px;
-        font-weight: bold;
+    border: 3px solid rgb(80, 184, 39);
+    border-radius: 10px;
+    /* padding-left: 50px; */
+    background-color: #20252a;
+    color:  rgb(129, 201, 129);
+    font-size: 12px;
+    font-weight: bold;
 }
 
 .inputTimer:hover {
@@ -141,14 +141,19 @@ button:hover {
 .inputTap {
     padding-left: 10px;
     font-size: 12px;
-    height: 15px;
+    height: 17px;
     border: 3px solid rgb(80, 184, 39);
-        border-radius: 10px;
+    border-radius: 10px;
     align-items: center;
     display: flex;
     justify-content: center;
-        color:  rgb(129, 201, 129);
-        background-color: #20252a;
+    color:  rgb(129, 201, 129);
+    background-color: #20252a;
+}
+.inputTap:hover {
+    border: 3px solid rgb(95, 224, 44);
+    transition: all 0.2s;
+    cursor: pointer;
 }
 .TapStyle {
     width: 20px;
@@ -159,3 +164,15 @@ button:hover {
 }
 button:active, button:focus {
     outline: none;
+}
+.inputWin {
+    font-size: 12px;
+    width: 100%;
+    color: #20252a;
+    background: none;
+    border: none;
+}
+
+form input {
+	text-align: center;
+}

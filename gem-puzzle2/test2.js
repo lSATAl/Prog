@@ -125,11 +125,12 @@ function move (nomer) {
     
 
     let finish = kletki.every(kletka => {
-        return kletka.value === kletka.top * 4 + kletka.left;
+        return kletka.value === kletka.top * selectChoice + kletka.left;
     })
 
     if(finish) {
-        
+        let WIN = document.Form3.win.value = `Ура! Вы решили головоломку за ${vivod} и ${Tap.length} ходов`;
+
     }
 
 
@@ -364,6 +365,7 @@ randome.addEventListener('click', () => {
     stoptimer()
     clear();
     start();
+    document.Form3.win.value = `Да прибудет с тобой сила`;
     timer()
 });
 
