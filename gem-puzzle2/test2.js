@@ -10,6 +10,7 @@ const Clear = document.querySelector('.clear')
 
 let selectChoice = selection.value.slice(-1);
 var Mamory = [];
+let Tap = [];
 let countKletok = selectChoice * selectChoice;
 let razmerKletki = 320 / selectChoice;
 let nomera =[...Array(countKletok-1).keys()];
@@ -107,6 +108,8 @@ function move (nomer) {
         return;
     }
     Mamory.push(nomer)
+    Tap.push(nomer)
+    document.Form2.tap.value = Tap.length;
 
     kletka.element.style.left = `${okno.left * razmerKletki}px`;
     kletka.element.style.top = `${okno.top * razmerKletki}px`;
@@ -204,6 +207,8 @@ function start () {
     random()
     console.log(Mamory)
     console.log(okno)
+    Tap = [];
+    document.Form2.tap.value = Tap.length;
 
     
 }
@@ -232,6 +237,7 @@ function MamoryCleaner(a) {
     
     Mamory = a;
   }
+
 
 //Секундомер
 let tictac;
@@ -265,7 +271,7 @@ function timer(){
       }
       
         vivod = H + ':' + M + ':' + S;
-        document.MyForm.stopwatch.value = vivod;
+        document.Form.timer.value = vivod;
       //Тикает всё через одну функцию, раз в секунду.
     },1000);
     
