@@ -110,4 +110,7 @@ button:hover {
     box-sizing: border-box;
     font-size: 0px;
 }
-#hour,#mins,#secs {display: inline-block; border-left: 1px solid #123; padding: 1px 5px;}
+#hour,#mins,#secs {
+    display: inline-block;
+    padding: 1px 5px;
+    }

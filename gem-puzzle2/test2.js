@@ -52,6 +52,8 @@ function bgg () {
     }
     Mamory = [];
     console.log(reversMemory)
+    clearInterval(tictac);
+
 }
 
 //Перемешивание
@@ -232,15 +234,19 @@ function MamoryCleaner(a) {
   }
 
 //Секундомер
+let tictac;
+let S = '00', M = '00', H = '00';
+let vivod = '';
 function timer(){
 
-    const hour = document.getElementById('hour');
-    const mins = document.getElementById('mins');
-    const secs = document.getElementById('secs');
-    let S = '00', M = '00', H = '00';
     
-    setInterval(function(){
-      //Плюсик перед строкой преобразует его в число
+    S = '00';
+    M = '00';
+    H = '00';
+    vivod = '';
+    
+    tictac = setInterval(function(){
+      //Плюсик перед строкой преобразует его в число,мания вне хогвартса
       S = +S +1;
       //Если результат меньше 10, прибавляем впереди строку '0'
       if( S < 10 ) { S = '0' + S; }
@@ -257,14 +263,22 @@ function timer(){
           if( H < 10 ) { H = '0' + H; }
         }
       }
-      secs.innerText = S;
-      mins.innerText = M;
-      hour.innerText = H;
+      
+        vivod = H + ':' + M + ':' + S;
+        document.MyForm.stopwatch.value = vivod;
       //Тикает всё через одну функцию, раз в секунду.
     },1000);
     
-    };
+    
 
+};
+function stoptimer() {
+    clearInterval(tictac);
+    S = '00';
+    M = '00';
+    H = '00';
+    vivod = H + ':' + M + ':' + S;
+}
 
 //drag drop
 
@@ -341,6 +355,7 @@ var dragged;
 //запускаем рандомайзер, сохраняем его шаги в память mamory
 randome.addEventListener('click', () => {
     //CTOP();
+    stoptimer()
     clear();
     start();
     timer()
